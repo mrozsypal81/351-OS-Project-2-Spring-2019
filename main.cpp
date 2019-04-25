@@ -18,7 +18,7 @@ proc_queue* queue;
 frame_list* framelist;
 
 int main() {
-	
+
 	// get the user input
 		get_user_input();
 
@@ -33,7 +33,7 @@ int main() {
 	//framelist = create_frame_list(mem_size / page_size, page_size);
 
 	//main_loop();
-	
+
 	system("pause");
 	return 0;
 }
@@ -77,7 +77,7 @@ void assign_process_list() {
 		for (int i = 0; i < number_of_procs; i++) {
 			//set id
 			myFile >> proc_list[i].pid;
-		
+
 			//set arriving time and life time
 			myFile >> proc_list[i].arrival_time >> proc_list[i].life_time;
 
@@ -126,7 +126,24 @@ void assign_available_memory_to_waiting_procs(int current_time) {
 
 // removes any completed procs from memory
 void terminate_completed_procs(int current_time) {
+	int i, time_spent_in_memory;
+	PROCESS* proc;//this might not initialize the process correctly
 
+	// dequeue any procs that need it
+	for (i = 0; i < number_of_procs; i++) {
+			proc = &proc_list[i];
+			time_spent_in_memory = current_time - proc->time_added_to_memory;
+
+			if (proc->is_active && (time_spent_in_memory >= proc->life_time)) {
+					cout << proc->pid << " Process " << get_announcement_prefix(current_time) << " completes" << endl;
+					proc->is_active = 0;
+					proc->time_finished = current_time;
+
+					free_memory_for_pid(framelist, proc->pid);
+
+					print_frame_list(framelist);
+			}
+	}
 }
 
 // adds any newly arrived procs to the input queue
@@ -146,5 +163,13 @@ void main_loop() {
 
 // prints the average turnaround time
 void print_turnaround_times() {
+	int i;
+	float total = 0;
 
+	for (i = 0; i < number_of_procs; i += 1) {
+			total += proc_list[i].time_finished - proc_list[i].arrival_time;
+	}
+
+	//printf("Average Turnaround Time: %2.2f\n", total / number_of_procs);
+	cout << "Average Turnaround Time " << total/number_of_procs << endl;
 }
