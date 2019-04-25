@@ -1,7 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-
+#include <vector>
+#include <queue>
 #include "prototypes.h"
 using namespace std;
 
@@ -13,24 +14,23 @@ int page_size = 0;
 int mem_size = 0;
 string file_name = "";
 int last_announcement = -1;
-PROCESS* proc_list;
-proc_queue* queue;
-frame_list* framelist;
+vector<PROCESS> proc_list;
+proc_queue waitList;
+frame_list framelist;
 
 int main() {
 
 	// get the user input
-		get_user_input();
+	get_user_input();
 
 	// read values from the input'd file into a shared proc list
-		assign_process_list();
-
+	assign_process_list();
 
 	// create a shared queue with a capacity = # of procs
-	//queue = create_proc_queue(number_of_procs);
+	waitList = create_proc_queue(number_of_procs);
 
 	// create a shared framelist
-	//framelist = create_frame_list(mem_size / page_size, page_size);
+	framelist = create_frame_list(mem_size / page_size, page_size);
 
 	//main_loop();
 
@@ -72,7 +72,7 @@ void assign_process_list() {
 	if (myFile.is_open()) {
 		//get number of processes
 		myFile >> number_of_procs;
-		proc_list = new PROCESS[number_of_procs];
+		proc_list.resize(number_of_procs);
 
 		for (int i = 0; i < number_of_procs; i++) {
 			//set id
