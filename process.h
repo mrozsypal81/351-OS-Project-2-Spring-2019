@@ -1,5 +1,6 @@
 #pragma once
-struct PROCESS{
+class PROCESS{
+public:
 	int pid;
 	int arrival_time;
 	int life_time;

@@ -59,18 +59,40 @@ void print_proc_queue(proc_queue q) {
 
 
 
-int queue_has_next(proc_queue* q) {
-
+int queue_has_next(proc_queue q) {
+	return q.size == 0 ? 0 : 1;
 }
 
 
-void dequeue_proc(proc_queue* q) {
+void dequeue_proc(proc_queue q) {
+	if (!queue_has_next(q)) {
+		cout << "ERROR: queue is empty, can't dequeue anything." << endl;
+		exit(2);
+	}
 
+	q.size--;
+	q.front++;
+
+	if (q.front == q.capacity) {
+		q.front = 0;
+	}
 }
 
 
 
-void dequeue_proc_at_index(proc_queue* q, int index) {
+proc_queue dequeue_proc_at_index(proc_queue q, int index) {
+	int prev = 0;
+	for (int i = 0; i < q.size; i += 1) {
+		if (i > index) {
+			q.elements[prev] = q.elements[i];
+		}
 
+		prev = i;
+	}
+
+	q.size--;
+	q.rear--;
+
+	return q;
 }
 
