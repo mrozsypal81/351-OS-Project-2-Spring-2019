@@ -178,14 +178,107 @@ void assign_available_memory_to_waiting_procs(int current_time) {
 }
 
 
-
 // removes any completed procs from memory
 void terminate_completed_procs(int current_time) {
 
+	int i, time_spent_in_memory;
+
+
+	PROCESS* proc;//this might not initialize the process correctly 
+
+	// dequeue any procs that need it 
+
+
+	for (i = 0; i < number_of_procs; i++) {
+
+
+
+
+		proc = &proc_list[i];
+
+
+
+
+		time_spent_in_memory = current_time - proc->time_added_to_memory;
+
+
+
+		if (proc->is_active && (time_spent_in_memory >= proc->life_time)) {
+
+
+			cout << proc->pid << " Process " << get_announcement_prefix(current_time) << " completes" << endl;
+
+			proc->is_active = 0;
+
+			proc->time_finished = current_time;
+
+
+			free_memory_for_pid(framelist, proc->pid);
+
+
+
+			print_frame_list(framelist);
+
+
+
+		}
+
+
+	}
 }
+	// prints the average turnaround time
+	void print_turnaround_times() {
 
 
-// prints the average turnaround time
-void print_turnaround_times() {
+		int i;
 
-}
+
+
+
+		float total = 0;
+
+
+
+
+
+
+
+
+
+		for (i = 0; i < number_of_procs; i += 1) {
+
+
+
+
+			total += proc_list[i].time_finished - proc_list[i].arrival_time;
+
+
+
+
+		}
+
+
+
+
+
+
+
+
+
+
+		//printf("Average Turnaround Time: %2.2f\n", total / number_of_procs); 
+
+
+
+
+		cout << "Average Turnaround Time " << total / number_of_procs << endl;
+
+
+
+
+	}
+
+
+
+
+
