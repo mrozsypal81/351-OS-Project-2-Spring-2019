@@ -91,11 +91,11 @@ void assign_process_list() {
 	cin >> file_name;
 
 	ifstream myFile;
-	myFile.open("in1.txt");
+	myFile.open(file_name);
 	//myFile.open(file_name);
 	if(!myFile){
 		perror("file failed to open");
-		exit(-1);
+		assign_process_list();
 	}
 	if (myFile.is_open()) {
 		//get number of processes
