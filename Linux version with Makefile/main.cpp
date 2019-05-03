@@ -19,7 +19,7 @@ proc_queue waitList;
 frame_list framelist;
 
 int main() {
-	
+
 	// get the user input
 	get_user_input();
 
@@ -33,7 +33,7 @@ int main() {
 	framelist = create_frame_list(mem_size / page_size, page_size);
 
 	main_loop();
-	
+
 	//system("pause");
 	return 0;
 }
@@ -91,8 +91,12 @@ void assign_process_list() {
 	cin >> file_name;
 
 	ifstream myFile;
-	myFile.open("in1.txt");
+	myFile.open(file_name);
 	//myFile.open(file_name);
+	if(!myFile){
+		perror("file failed to open");
+		assign_process_list();
+	}
 	if (myFile.is_open()) {
 		//get number of processes
 		myFile >> number_of_procs;
@@ -101,7 +105,7 @@ void assign_process_list() {
 		for (int i = 0; i < number_of_procs; i++) {
 			//set id
 			myFile >> proc_list[i].pid;
-		
+
 			//set arriving time and life time
 			myFile >> proc_list[i].arrival_time >> proc_list[i].life_time;
 
@@ -147,11 +151,11 @@ void enqueue_newly_arrived_procs(int current_time) {
 string get_announcement_prefix(int current_time) {
 	string result = "";
 
-	if (last_announcement == current_time) 
+	if (last_announcement == current_time)
 		result = "\t";
-	else 
+	else
 		result = "t = " + to_string(current_time) + "\t";
-	
+
 	last_announcement = current_time;
 	return result;
 }
@@ -159,7 +163,7 @@ string get_announcement_prefix(int current_time) {
 // removes any completed procs from memory
 void terminate_completed_procs(int current_time) {
 	int i, time_spent_in_memory;
-	// dequeue any procs that need it 
+	// dequeue any procs that need it
 	for (i = 0; i < number_of_procs; i++) {
 		time_spent_in_memory = current_time - proc_list[i].time_added_to_memory;
 		if (proc_list[i].is_active && (time_spent_in_memory >= proc_list[i].life_time)) {
@@ -181,7 +185,7 @@ void print_turnaround_times() {
 	for (i = 0; i < number_of_procs; i += 1) {
 		total += proc_list[i].time_finished - proc_list[i].arrival_time;
 	}
-	//printf("Average Turnaround Time: %2.2f\n", total / number_of_procs); 
+	//printf("Average Turnaround Time: %2.2f\n", total / number_of_procs);
 	cout << "Average Turnaround Time " << total / number_of_procs << endl;
 }
 
@@ -196,7 +200,7 @@ void assign_available_memory_to_waiting_procs(int current_time) {
 	for (int i = 0; i < limit; i++) {
 		index = iterate_queue_index(waitList, i);
 		proc = waitList.elements[index];
-		
+
 		if (proc_can_fit_into_memory(framelist, proc)) {
 			cout << get_announcement_prefix(current_time) << "MM moves Process "
 				<< proc.pid << " to memory" << endl;
@@ -209,11 +213,10 @@ void assign_available_memory_to_waiting_procs(int current_time) {
 					waitList = dequeue_proc_at_index(waitList, i);
 				}
 			}
-			
+
 			print_proc_queue(waitList);
-			
+
 			print_frame_list(framelist);
 		}
 	}
 }
-
