@@ -92,7 +92,7 @@ void assign_process_list() {
 
 	ifstream myFile;
 	myFile.open(file_name);
-	//myFile.open(file_name);
+
 	if(!myFile){
 		perror("file failed to open");
 		assign_process_list();
