@@ -2,9 +2,13 @@ CPSC 351 Section #03 13681
 Project 2: Memory and Paging Management
 
 Alex Garcia - alex.garcia@csu.fullerton.edu 
-Lambert Liu - chenxiaoliu_1998@csu.fullerton.edu,
-Michael Rozsypal - mrozsypal@csu.fullerton.edu 
+
+Lambert Liu - chenxiaoliu_1998@csu.fullerton.edu
+
+Michael Rozsypal - mrozsypal@csu.fullerton.edu
+
 Rodrigo Reynoso - rodrigoreynoso@csu.fullerton.edu
+
 -------------------------------------------------------
 Programming Language used: C++
 -------------------------------------------------------
@@ -21,7 +25,11 @@ How to execute the program:
 
 --------------------------------------------------------
 Contribution:
+
 Alex and Rodrigo collaborated to create the design of the program.
+
 Lambert and Michael worked together on the code and implementation of the program.
+
 Group members collaborated through meetings or working with each other online from home. 
+
 Members would discuss problems and propose solutions to those problems, whether it was a design, code, or implementation issue.
