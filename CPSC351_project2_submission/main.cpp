@@ -102,20 +102,34 @@ void readData() {
 	if (myFile.is_open()) {
 		//get number of processes
 		myFile >> number_of_processes;
+		if(myFile.fail()){
+			perror("input file error number of processes");
+			exit(-1);
+		}
 		processList.resize(number_of_processes);
 
 		for (int i = 0; i < number_of_processes; i++) {
 			//set id
 			myFile >> processList[i].pid;
-
+			if(myFile.fail()){
+				perror("input file error id number");
+				exit(-1);
+			}
 			//set arriving time and life time
 			myFile >> processList[i].arriving_time >> processList[i].burst_time;
-
+			if(myFile.fail()){
+				perror("input file error arriving time/ life time");
+				exit(-1);
+			}
 			//set memory size
 			int memory_request_num = 0;
 			int memory_request_size[10000] = { 0 };
 			int sum = 0;
 			myFile >> memory_request_num;
+			if(myFile.fail()){
+				perror("input file error memory size");
+				exit(-1);
+			}
 			for (int j = 0; j < memory_request_num; j++) {
 				myFile >> memory_request_size[j];
 				sum += memory_request_size[j];

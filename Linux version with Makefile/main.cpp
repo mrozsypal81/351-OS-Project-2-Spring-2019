@@ -100,20 +100,34 @@ void assign_process_list() {
 	if (myFile.is_open()) {
 		//get number of processes
 		myFile >> number_of_procs;
+		if(myFile.fail()){
+			perror("input file error number of processes");
+			exit(-1);
+		}
 		proc_list.resize(number_of_procs);
 
 		for (int i = 0; i < number_of_procs; i++) {
 			//set id
 			myFile >> proc_list[i].pid;
-
+			if(myFile.fail()){
+				perror("input file error id number");
+				exit(-1);
+			}
 			//set arriving time and life time
 			myFile >> proc_list[i].arrival_time >> proc_list[i].life_time;
-
+			if(myFile.fail()){
+				perror("input file error arriving time/ life time");
+				exit(-1);
+			}
 			//set memory size
 			int memory_request_num = 0;
 			int memory_request_size[10000] = { 0 };
 			int sum = 0;
 			myFile >> memory_request_num;
+			if(myFile.fail()){
+				perror("input file error memory size");
+				exit(-1);
+			}
 			for (int j = 0; j < memory_request_num; j++) {
 				myFile >> memory_request_size[j];
 				sum += memory_request_size[j];
